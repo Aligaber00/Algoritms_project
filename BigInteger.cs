@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -127,14 +128,12 @@ namespace Algoritms_proj
 
         public static BigInteger Multiply(BigInteger x, BigInteger y)
         {
-            if(x.digits.Count ==1 || y.digits.Count == 1)
+            if (x.digits.Count == 1 && y.digits.Count == 1)
             {
-                return LongMultiplication(x, y);
+                
+                return new BigInteger(x.digits[0] * y.digits[0]);
             }
             int n = Math.Max(x.digits.Count,y.digits.Count);
-            x = PadWithZeros(x, n);
-            y = PadWithZeros(y, n);
-
             int half = (n + 1) / 2;
 
             BigInteger a = x.Firsthalf(half);
@@ -160,12 +159,20 @@ namespace Algoritms_proj
         }
         public BigInteger Firsthalf(int num1)
         {
+            if(num1 >=digits.Count)
+            {
+                return new BigInteger(0);
+            }
             List<int> first_half_digits = new List<int>(digits.GetRange(num1,digits.Count - num1));
             return new BigInteger(first_half_digits);
 
         }
         public BigInteger Second_half(int num2)
         {
+            if (num2 >= digits.Count)
+            {
+                return new BigInteger(digits);
+            }
             List<int> second_half_digits = new List<int>(digits.GetRange(0,num2));
             return new BigInteger(second_half_digits);
         }
@@ -178,42 +185,13 @@ namespace Algoritms_proj
             }
             return new BigInteger(zero_added);
         }
-        private static BigInteger PadWithZeros(BigInteger num, int targetLen)
-        {
-            if (num.digits.Count >= targetLen) return num;
-            List<int> padded = new List<int>(num.digits);
-            while (padded.Count < targetLen) padded.Add(0);
-            return new BigInteger(padded);
-        }
-        private static BigInteger LongMultiplication(BigInteger x, BigInteger y)
-        {
-            // Handle zero case immediately
-            if (x.IsZero || y.IsZero)
-                return new BigInteger(0);
 
-            // Result digits (initialized to zero)
-            List<int> result = new List<int>(new int[x.digits.Count + y.digits.Count]);
 
-            // Multiply each digit of x with each digit of y
-            for (int i = 0; i < x.digits.Count; i++)
-            {
-                int carry = 0;
-                for (int j = 0; j < y.digits.Count; j++)
-                {
-                    // Multiply digits and add to current position
-                    int product = x.digits[i] * y.digits[j] + result[i + j] + carry;
-                    carry = product / 10;
-                    result[i + j] = product % 10;
-                }
-                // Store remaining carry
-                result[i + y.digits.Count] += carry;
-            }
 
-            // Remove leading zeros and return
-            while (result.Count > 1 && result[result.Count - 1] == 0)
-                result.RemoveAt(result.Count - 1);
-
-            return new BigInteger(result);
-        }
     }
+    
+
+    
 }
+
+    

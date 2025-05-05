@@ -11,8 +11,8 @@ namespace Algoritms_proj
     {
         static void Main(string[] args)
         {
-            BigInteger a = new BigInteger(18477);
-            BigInteger b = new BigInteger(1377);
+            BigInteger a = new BigInteger(18);
+            BigInteger b = new BigInteger(133);
             
             Console.WriteLine(BigInteger.Multiply(a, b));
 
