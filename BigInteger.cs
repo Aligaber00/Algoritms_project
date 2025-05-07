@@ -46,6 +46,23 @@ namespace Algoritms_proj
         public bool IsZero => digits.Count == 1 && digits[0] == 0;
         public bool IsEven() => digits[0] % 2 == 0;
 
+        private bool IsSmaller(BigInteger a , BigInteger b)
+        {
+           
+            bool aIsSmaller = a.digits.Count < b.digits.Count;
+            if (a.digits.Count == b.digits.Count)
+            {
+                for (int i = a.digits.Count - 1; i >= 0; i--)
+                {
+                    if (a.digits[i] != b.digits[i])
+                    {
+                        aIsSmaller = a.digits[i] < b.digits[i];
+                        break;
+                    }
+                }
+            }
+            return aIsSmaller;
+        }
         public override string ToString()
         {
             if (IsZero) return "0";
@@ -80,32 +97,17 @@ namespace Algoritms_proj
 
         public static BigInteger Sub(BigInteger a, BigInteger b)
         {
-            // Check if a < b
-            bool aIsSmaller = a.digits.Count < b.digits.Count;
-            if (a.digits.Count == b.digits.Count)
-            {
-                for (int i = a.digits.Count - 1; i >= 0; i--)
-                {
-                    if (a.digits[i] != b.digits[i])
-                    {
-                        aIsSmaller = a.digits[i] < b.digits[i];
-                        break;
-                    }
-                }
-            }
-
-            // If a < b, inform user and return null
-            if (aIsSmaller)
+        
+            if (a.IsSmaller(a , b))
             {
                 Console.WriteLine("Cannot perform subtraction: first number is smaller than second.");
                 return null; 
             }
 
-            // subtraction logic 
             int borrow = 0;
             List<int> resultDigits = new List<int>();
             int maxLen = Math.Max(a.digits.Count, b.digits.Count);
-
+           
             for (int i = 0; i < maxLen; i++)
             {
                 int diff = -borrow;
@@ -115,7 +117,6 @@ namespace Algoritms_proj
                 resultDigits.Add(diff + (borrow * 10));
             }
 
-            // Remove leading zeros
             while (resultDigits.Count > 1 && resultDigits.Last() == 0)
                 resultDigits.RemoveAt(resultDigits.Count - 1);
 
@@ -186,11 +187,27 @@ namespace Algoritms_proj
             return new BigInteger(zero_added);
         }
 
+        public static (BigInteger Quotient, BigInteger Remainder) Div(BigInteger a, BigInteger b)
+        {
+            if (b.IsZero)
+                throw new DivideByZeroException("Cannot perform Division: division by zero is not allowed.");
 
+            if (a.IsSmaller(a, b))
+                return (new BigInteger(0), a);
+
+            BigInteger twoB = Add(b, b);
+            var (q, r) = Div(a, twoB);
+
+            BigInteger twoQ = Add(q, q);
+
+            if (a.IsSmaller(r, b))
+                return (twoQ, r);
+            else
+                return (Add(twoQ, new BigInteger(1)), Sub(r, b));
+        }
 
     }
     
-
     
 }
 
