@@ -2,6 +2,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -205,7 +206,52 @@ namespace Algoritms_proj
             else
                 return (Add(twoQ, new BigInteger(1)), Sub(r, b));
         }
+        public static BigInteger Mod(BigInteger a, BigInteger b)
+        {
+            var (_, remainder) = Div(a, b);
+            return remainder;
+        }
+        public static BigInteger Mod_pow(BigInteger basenum, BigInteger exponent, BigInteger modulus)
+        {
+            if (modulus.IsZero)
+                throw new DivideByZeroException("modulus cannot be zero");
+            if (exponent.IsZero)
+                return new BigInteger(1);
+            if(exponent.digits.Count == 1 &&  exponent.digits[0] == 1)
+                return Mod(basenum,modulus);
+            BigInteger mid = Mod_pow(basenum, exponent.RightShift(), modulus);
+            BigInteger result = Mod(Multiply(mid, mid),modulus);
+           
+            if(!exponent.IsEven())
+            {
+                 result = Mod(Multiply(result,basenum),modulus);
+            }
+            return result;
 
+        }
+        public BigInteger RightShift(int shift = 1)
+        {
+            if (shift <= 0) return new BigInteger(this.digits.ToList());
+            if (IsZero) return new BigInteger(0);
+
+            List<int> result = new List<int>();
+            int carry = 0;
+
+            
+            for (int i = digits.Count - 1; i >= 0; i--)
+            {
+                int current = digits[i] + carry * 10;
+                result.Insert(0, current / 2);  
+                carry = current % 2;
+            }
+
+            
+            while (result.Count > 1 && result.Last() == 0)
+                result.RemoveAt(result.Count - 1);
+
+            return new BigInteger(result);
+        }
+        
     }
     
     
