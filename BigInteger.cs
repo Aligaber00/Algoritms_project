@@ -219,7 +219,7 @@ namespace Algoritms_proj
                 return new BigInteger(1);
             if(exponent.digits.Count == 1 &&  exponent.digits[0] == 1)
                 return Mod(basenum,modulus);
-            BigInteger mid = Mod_pow(basenum, exponent.RightShift(), modulus);
+            BigInteger mid = Mod_pow(basenum, exponent.Divide_by2(), modulus);
             BigInteger result = Mod(Multiply(mid, mid),modulus);
            
             if(!exponent.IsEven())
@@ -229,7 +229,7 @@ namespace Algoritms_proj
             return result;
 
         }
-        public BigInteger RightShift(int shift = 1)
+        public BigInteger Divide_by2(int shift = 1)
         {
             if (shift <= 0) return new BigInteger(this.digits.ToList());
             if (IsZero) return new BigInteger(0);
