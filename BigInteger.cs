@@ -29,8 +29,18 @@ namespace Algoritms_proj
                 number /= 10;
             }
         }
+        public BigInteger(string number)
+        {
+            digits = new List<int>();
+            for (int i = number.Length - 1; i >= 0; i--)
+            {
+                if (char.IsDigit(number[i]))
+                    digits.Add(number[i] - '0');
+            }
+            Trim();
+        }
 
-        
+
 
         public BigInteger(List<int> digits)
         {

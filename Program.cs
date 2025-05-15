@@ -10,14 +10,20 @@ using System.IO;
 
 namespace Algoritms_proj
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            string inputPath = "SampleRSA.txt";
-            string outputPath = "output_results.txt";
-            string[] lines = File.ReadAllLines(inputPath);
+            string inputPath = "TestRSA.txt";
+            string outputPath = "output_results2.txt";
 
+            if (!File.Exists(inputPath))
+            {
+                Console.WriteLine("Input file not found.");
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(inputPath);
             int testCount = int.Parse(lines[0]);
             List<string> outputResults = new List<string>();
             RSA rsa = new RSA();
@@ -25,30 +31,28 @@ namespace Algoritms_proj
 
             for (int i = 0; i < testCount; i++)
             {
-                BigInteger N = new BigInteger(int.Parse(lines[index++]));
-                BigInteger exponent = new BigInteger(int.Parse(lines[index++]));
-                BigInteger message = new BigInteger(int.Parse(lines[index++]));
+                BigInteger N = new BigInteger(lines[index++]);
+                BigInteger exponent = new BigInteger(lines[index++]);
+                BigInteger message = new BigInteger(lines[index++]);
                 int operation = int.Parse(lines[index++]);
 
-                Stopwatch sw = Stopwatch.StartNew();
+                int start = Environment.TickCount;
 
                 BigInteger result;
                 if (operation == 0)
-                    result = rsa.Encrypt(message, exponent, N);
+                    result = rsa.Encrypt(message, exponent, N); // encryption
                 else
-                    result = rsa.Decrypt(message, exponent, N);
+                    result = rsa.Decrypt(message, exponent, N); // decryption
 
-                sw.Stop();
-                double elapsedTimeMs = sw.Elapsed.TotalMilliseconds;
+                int end = Environment.TickCount;
+                int elapsed = end - start;
 
                 outputResults.Add(result.ToString());
-                Console.WriteLine($"Test Case {i + 1}: {result} (Time: {elapsedTimeMs:F3} ms)");
+                Console.WriteLine($"Test Case {i + 1}: {result}\nExecution Time: {elapsed} ms");
             }
 
             File.WriteAllLines(outputPath, outputResults);
             Console.WriteLine("Results saved to: " + outputPath);
-
-
         }
     }
 }
