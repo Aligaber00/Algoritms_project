@@ -14,45 +14,58 @@ namespace Algoritms_proj
     {
         public static void Main()
         {
-            string inputPath = "TestRSA.txt";
-            string outputPath = "output_results2.txt";
+            //string inputPath = "TestRSA.txt";
+            //string outputPath = "output_results2.txt";
 
-            if (!File.Exists(inputPath))
-            {
-                Console.WriteLine("Input file not found.");
-                return;
-            }
+            //if (!File.Exists(inputPath))
+            //{
+            //    Console.WriteLine("Input file not found.");
+            //    return;
+            //}
 
-            string[] lines = File.ReadAllLines(inputPath);
-            int testCount = int.Parse(lines[0]);
-            List<string> outputResults = new List<string>();
+            //string[] lines = File.ReadAllLines(inputPath);
+            //int testCount = int.Parse(lines[0]);
+            //List<string> outputResults = new List<string>();
+            //RSA rsa = new RSA();
+            //int index = 1;
+
+            //for (int i = 0; i < testCount; i++)
+            //{
+            //    BigInteger N = new BigInteger(lines[index++]);
+            //    BigInteger exponent = new BigInteger(lines[index++]);
+            //    BigInteger message = new BigInteger(lines[index++]);
+            //    int operation = int.Parse(lines[index++]);
+
+            //    int start = Environment.TickCount;
+
+            //    BigInteger result;
+            //    if (operation == 0)
+            //        result = rsa.Encrypt(message, exponent, N); // encryption
+            //    else
+            //        result = rsa.Decrypt(message, exponent, N); // decryption
+
+            //    int end = Environment.TickCount;
+            //    int elapsed = end - start;
+
+            //    outputResults.Add(result.ToString());
+            //    Console.WriteLine($"Test Case {i + 1}: {result}\nExecution Time: {elapsed} ms");
+            //}
+
+            //File.WriteAllLines(outputPath, outputResults);
+            //Console.WriteLine("Results saved to: " + outputPath);
+
+            string original = "All ASCII ~!@#^&*()_+=-` ook this is a very very long striiiiinngg very very long and wide";
+
+            BigInteger e = new BigInteger(17);
+            BigInteger d = new BigInteger(2753);
+            BigInteger n = new BigInteger(3233);        //must be bigger than 255
             RSA rsa = new RSA();
-            int index = 1;
 
-            for (int i = 0; i < testCount; i++)
-            {
-                BigInteger N = new BigInteger(lines[index++]);
-                BigInteger exponent = new BigInteger(lines[index++]);
-                BigInteger message = new BigInteger(lines[index++]);
-                int operation = int.Parse(lines[index++]);
+            var encrypted = rsa.EncryptString(original, e, n);
+            var decrypted = rsa.DecryptString(encrypted, d, n);
 
-                int start = Environment.TickCount;
-
-                BigInteger result;
-                if (operation == 0)
-                    result = rsa.Encrypt(message, exponent, N); // encryption
-                else
-                    result = rsa.Decrypt(message, exponent, N); // decryption
-
-                int end = Environment.TickCount;
-                int elapsed = end - start;
-
-                outputResults.Add(result.ToString());
-                Console.WriteLine($"Test Case {i + 1}: {result}\nExecution Time: {elapsed} ms");
-            }
-
-            File.WriteAllLines(outputPath, outputResults);
-            Console.WriteLine("Results saved to: " + outputPath);
+            Console.WriteLine($"Original: {original}");
+            Console.WriteLine($"Decrypted: {decrypted}");
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Algoritms_proj
         public bool IsZero => digits.Count == 1 && digits[0] == 0;
         public bool IsEven() => digits[0] % 2 == 0;
 
-        private bool IsSmaller(BigInteger a , BigInteger b)
+        public static bool IsSmaller(BigInteger a , BigInteger b)
         {
            
             bool aIsSmaller = a.digits.Count < b.digits.Count;
@@ -109,7 +109,7 @@ namespace Algoritms_proj
         public static BigInteger Sub(BigInteger a, BigInteger b)
         {
         
-            if (a.IsSmaller(a , b))
+            if (IsSmaller(a , b))
             {
                 Console.WriteLine("Cannot perform subtraction: first number is smaller than second.");
                 return null; 
@@ -203,7 +203,7 @@ namespace Algoritms_proj
             if (b.IsZero)
                 throw new DivideByZeroException("Cannot perform Division: division by zero is not allowed.");
 
-            if (a.IsSmaller(a, b))
+            if (IsSmaller(a, b))
                 return (new BigInteger(0), a);
 
             BigInteger twoB = Add(b, b);
@@ -211,10 +211,10 @@ namespace Algoritms_proj
 
             BigInteger twoQ = Add(q, q);
 
-            if (a.IsSmaller(r, b))
+            if (IsSmaller(r, b))
                 return (twoQ, r);
             else
-                return (Add(twoQ, new BigInteger(1)), Sub(r, b));
+                return (Add(twoQ, new BigInteger(1)), Sub(r, b));   
         }
         public static BigInteger Mod(BigInteger a, BigInteger b)
         {
@@ -261,7 +261,26 @@ namespace Algoritms_proj
 
             return new BigInteger(result);
         }
-        
+
+        public static BigInteger CharToInt(char c)
+        {
+            return new BigInteger((int)c);
+        }
+
+        public static char IntToChar(BigInteger num)
+        {
+            int ASCIIval = 0;
+            int pow = 1;
+
+            for (int i = 0; i < num.digits.Count; i++)
+            {
+                ASCIIval += num.digits[i] * pow;
+                pow *= 10;
+            }
+
+            return (char)ASCIIval;
+        }
+
     }
     
     
