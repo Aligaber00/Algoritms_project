@@ -87,6 +87,7 @@ namespace Algoritms_proj
             return sb.ToString();
         }
 
+        // Addition 
         public static BigInteger Add(BigInteger a, BigInteger b)
         {
             List<int> result = new List<int>();
@@ -105,7 +106,7 @@ namespace Algoritms_proj
 
 
 
-
+        // subtraction 
         public static BigInteger Sub(BigInteger a, BigInteger b)
         {
         
@@ -137,7 +138,7 @@ namespace Algoritms_proj
 
 
 
-
+        // multiplcation
         public static BigInteger Multiply(BigInteger x, BigInteger y)
         {
             if (x.digits.Count == 1 && y.digits.Count == 1)
@@ -152,9 +153,10 @@ namespace Algoritms_proj
             BigInteger b = x.Second_half(half);
             BigInteger c = y.Firsthalf(half);
             BigInteger d = y.Second_half(half);
-
+            // result = (ac) * 10^n + (ad + bc) * 10^half + bd
             BigInteger ac = Multiply(a, c);
             BigInteger bd = Multiply(b, d);
+            // (ad + bc) = (a+c)(b+d) - ac - bd
             BigInteger a_plus_b = Add(a, b);
             BigInteger c_plus_d = Add(c, d);
             
@@ -169,6 +171,7 @@ namespace Algoritms_proj
             return Add(result, bd);
 
         }
+        // Multiplcation helper functions
         public BigInteger Firsthalf(int num1)
         {
             if(num1 >=digits.Count)
@@ -198,6 +201,8 @@ namespace Algoritms_proj
             return new BigInteger(zero_added);
         }
 
+
+        // Divison 
         public static (BigInteger Quotient, BigInteger Remainder) Div(BigInteger a, BigInteger b)
         {
             if (b.IsZero)
@@ -216,29 +221,35 @@ namespace Algoritms_proj
             else
                 return (Add(twoQ, new BigInteger(1)), Sub(r, b));   
         }
+        // Mod func for the Mod_pow
         public static BigInteger Mod(BigInteger a, BigInteger b)
         {
             var (_, remainder) = Div(a, b);
             return remainder;
         }
+
+        // Mod_pow used for encrypt and decrypt
         public static BigInteger Mod_pow(BigInteger basenum, BigInteger exponent, BigInteger modulus)
         {
             if (modulus.IsZero)
                 throw new DivideByZeroException("modulus cannot be zero");
             if (exponent.IsZero)
                 return new BigInteger(1);
-            if(exponent.digits.Count == 1 &&  exponent.digits[0] == 1)
-                return Mod(basenum,modulus);
+            if (exponent.digits.Count == 1 && exponent.digits[0] == 1)
+                return Mod(basenum, modulus);
             BigInteger mid = Mod_pow(basenum, exponent.Divide_by2(), modulus);
-            BigInteger result = Mod(Multiply(mid, mid),modulus);
-           
-            if(!exponent.IsEven())
+
+            BigInteger result = Mod(Multiply(mid, mid), modulus);
+
+            if (!exponent.IsEven())
             {
-                 result = Mod(Multiply(result,basenum),modulus);
+                result = Mod(Multiply(result, basenum), modulus);
             }
             return result;
 
         }
+
+        //helper for Mod_pow
         public BigInteger Divide_by2(int shift = 1)
         {
             if (shift <= 0) return new BigInteger(this.digits.ToList());
@@ -256,12 +267,12 @@ namespace Algoritms_proj
             }
 
             
-            while (result.Count > 1 && result.Last() == 0)
-                result.RemoveAt(result.Count - 1);
+            //while (result.Count > 1 && result.Last() == 0)
+            //    result.RemoveAt(result.Count - 1);
 
             return new BigInteger(result);
         }
-
+        // bonus 1 -> string
         public static BigInteger CharToInt(char c)
         {
             return new BigInteger((int)c);
