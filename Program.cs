@@ -90,7 +90,7 @@ namespace Algoritms_proj
 
 
 
-            //string original = "All ASCII ~!@#^&*()_+=-` ook this is a very very long striiiiinngg very very long and wide";
+            //string original = "~()_+=!@*#^&-` ook this is a very very long striiiiinngg very very long and wide";
 
             //BigInteger e = new BigInteger(17);
             //BigInteger d = new BigInteger(2753);
@@ -101,7 +101,7 @@ namespace Algoritms_proj
             //var decrypted = rsa.DecryptString(encrypted, d, n);
 
             //Console.WriteLine($"Original: {original}");
-            //Console.WriteLine($"Decrypted: {decrypted}");
+            //Console.WriteLine($"Decrypted: {decrypted}"); 
         }
     }
 }
